@@ -1,0 +1,110 @@
+/* ─────────────────────────────────────────────────
+   FusionLoader — signature loading animation
+   Inspired by Claude's breathing orbs,
+   adapted to Fusion AI's purple/teal identity.
+───────────────────────────────────────────────── */
+
+.fusion-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.fusion-loader--inline {
+  flex-direction: row;
+  gap: 0;
+}
+
+/* ── Orb container ── */
+.fusion-loader__orbs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fusion-loader--sm .fusion-loader__orbs { gap: 6px; }
+.fusion-loader--lg .fusion-loader__orbs { gap: 14px; }
+
+/* ── Individual orbs ── */
+.fusion-loader__orb {
+  display: block;
+  border-radius: 50%;
+  animation: fusion-orb-breathe 1.8s ease-in-out infinite;
+  position: relative;
+}
+
+/* Size variants */
+.fusion-loader--sm  .fusion-loader__orb { width: 8px;  height: 8px; }
+.fusion-loader--md  .fusion-loader__orb { width: 12px; height: 12px; }
+.fusion-loader--lg  .fusion-loader__orb { width: 18px; height: 18px; }
+
+/* Orb 1 — violet */
+.fusion-loader__orb--1 {
+  background: radial-gradient(circle at 35% 35%, #C084FC, #7C3AED);
+  box-shadow:
+    0 0 8px 2px rgba(124, 58, 237, 0.5),
+    0 0 20px 4px rgba(124, 58, 237, 0.25);
+  animation-delay: 0s;
+}
+
+/* Orb 2 — indigo-blue bridge */
+.fusion-loader__orb--2 {
+  background: radial-gradient(circle at 35% 35%, #818CF8, #4F46E5);
+  box-shadow:
+    0 0 8px 2px rgba(99, 102, 241, 0.5),
+    0 0 20px 4px rgba(99, 102, 241, 0.25);
+  animation-delay: 0.3s;
+}
+
+/* Orb 3 — teal */
+.fusion-loader__orb--3 {
+  background: radial-gradient(circle at 35% 35%, #38BDF8, #0EA5E9);
+  box-shadow:
+    0 0 8px 2px rgba(14, 165, 233, 0.5),
+    0 0 20px 4px rgba(14, 165, 233, 0.25);
+  animation-delay: 0.6s;
+}
+
+/* ── Breathing keyframes ── */
+@keyframes fusion-orb-breathe {
+  0%, 100% {
+    transform: scale(0.72);
+    opacity: 0.45;
+  }
+  40% {
+    transform: scale(1.18);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(1.08);
+    opacity: 0.9;
+  }
+}
+
+/* ── Label ── */
+.fusion-loader__label {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  animation: fusion-label-fade 1.8s ease-in-out infinite;
+}
+
+@keyframes fusion-label-fade {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1;   }
+}
+
+/* ── Full-screen overlay variant (used in GeneratingPage) ── */
+.fusion-loader-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: var(--bg-primary);
+  z-index: 999;
+}

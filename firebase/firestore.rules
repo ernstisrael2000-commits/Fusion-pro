@@ -1,0 +1,40 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+
+      // A new account starts at zero credits. Only trusted server code may
+      // later change the balance or write a credit transaction.
+      allow create: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.data.keys().hasOnly([
+          'uid', 'email', 'displayName', 'credits', 'createdAt', 'updatedAt'
+        ])
+        && request.resource.data.uid == userId
+        && request.resource.data.email is string
+        && request.resource.data.credits == 0
+        && request.resource.data.displayName is string
+        && request.resource.data.createdAt is timestamp
+        && request.resource.data.updatedAt is timestamp;
+
+      allow update: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['displayName', 'updatedAt']);
+
+      allow delete: if false;
+    }
+
+    match /credit_transactions/{transactionId} {
+      allow read: if request.auth != null
+        && resource.data.user_id == request.auth.uid;
+      allow write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,353 @@
+/* ============================================================
+   FUSION CORE ANIMATION
+   ============================================================ */
+
+.fusion-core-wrapper {
+  position: relative;
+  min-height: 100dvh;
+  background: #080818;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 24px 40px;
+  overflow: hidden;
+  gap: 32px;
+}
+
+/* ── Stars ── */
+.fusion-stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 15% 25%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px   at 80% 15%,  rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px   at 45% 65%,  rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 8%  80%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px   at 68% 78%,  rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px   at 32% 42%,  rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px   at 90% 55%,  rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 55% 88%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px   at 22% 72%,  rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px   at 75% 35%,  rgba(255,255,255,0.4) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+/* ── Stage (canvas for the orb) ── */
+.fusion-stage {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  flex-shrink: 0;
+}
+
+.fusion-core-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Ambient rings ── */
+.ambient-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  pointer-events: none;
+}
+
+.ambient-ring-1 {
+  width: 200px; height: 200px;
+  border-color: rgba(124, 58, 237, 0.25);
+  border-top-color: rgba(124, 58, 237, 0.7);
+  animation: spinRing linear infinite;
+}
+
+.ambient-ring-2 {
+  width: 230px; height: 170px;
+  border-color: rgba(14, 165, 233, 0.15);
+  border-right-color: rgba(14, 165, 233, 0.5);
+  animation: spinRing linear infinite reverse;
+  transform: rotate(30deg);
+}
+
+.ambient-ring-3 {
+  width: 180px; height: 220px;
+  border-color: rgba(236, 72, 153, 0.1);
+  border-bottom-color: rgba(236, 72, 153, 0.4);
+  animation: spinRing linear infinite;
+  transform: rotate(60deg);
+}
+
+@keyframes spinRing {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Neural SVG ── */
+.neural-svg {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: neuralPulse 3s ease-in-out infinite;
+}
+
+@keyframes neuralPulse {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1; }
+}
+
+/* ── Orbiting particles ── */
+.particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: radial-gradient(circle, #A78BFA, #7C3AED);
+  box-shadow: 0 0 6px rgba(167, 139, 250, 0.8);
+  animation: orbit var(--speed) linear infinite var(--delay);
+  transform-origin: 0 0;
+}
+
+@keyframes orbit {
+  from {
+    transform: rotate(var(--angle)) translateX(var(--radius)) rotate(calc(-1 * var(--angle)));
+  }
+  to {
+    transform: rotate(calc(var(--angle) + 360deg)) translateX(var(--radius)) rotate(calc(-1 * (var(--angle) + 360deg)));
+  }
+}
+
+/* ── Brain nodes ── */
+.brain-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: rgba(22, 22, 46, 0.9);
+  border: 1px solid rgba(124, 58, 237, 0.4);
+  border-radius: 12px;
+  padding: 6px 8px;
+  backdrop-filter: blur(8px);
+  animation: nodeFloat 3s ease-in-out infinite;
+}
+
+.brain-node:nth-child(odd)  { animation-delay: 0.5s; }
+.brain-node:nth-child(even) { animation-delay: 1s; }
+
+@keyframes nodeFloat {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+  50%       { transform: translate(-50%, -50%) translateY(-4px); }
+}
+
+.brain-node-icon  { font-size: 14px; line-height: 1; }
+.brain-node-label { font-size: 9px; font-weight: 600; color: #A78BFA; letter-spacing: 0.5px; white-space: nowrap; }
+
+/* ── Core sphere ── */
+.fusion-core-sphere {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #9F7AEA, #5B21B6, #2D1B69);
+  transition: box-shadow 1s ease, background 1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  animation: corePulse 2s ease-in-out infinite;
+}
+
+.fusion-core-sphere.phase-creation {
+  background: radial-gradient(circle at 35% 35%, #C4B5FD, #7C3AED, #4C1D95);
+  animation: corePulse 0.8s ease-in-out infinite;
+}
+
+.fusion-core-sphere.phase-done {
+  background: radial-gradient(circle at 35% 35%, #6EE7B7, #10B981, #065F46);
+  animation: corePulse 3s ease-in-out infinite;
+}
+
+@keyframes corePulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.06); }
+}
+
+.core-inner-ring {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.25);
+  border-top-color: rgba(255,255,255,0.7);
+  animation: spinRing linear infinite;
+}
+
+.core-inner-ring-2 {
+  inset: 16px;
+  border-color: rgba(255,255,255,0.15);
+  border-right-color: rgba(255,255,255,0.5);
+  animation-direction: reverse;
+}
+
+.core-nucleus {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.core-pulse {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #E9D5FF, #C4B5FD);
+  box-shadow: 0 0 12px rgba(196, 181, 253, 0.8);
+}
+
+.core-check {
+  font-size: 18px;
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(255,255,255,0.8);
+}
+
+/* ── Text zone ── */
+.fusion-text-zone {
+  text-align: center;
+}
+
+.fusion-main-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: #F1F0FF;
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+}
+
+.fusion-sub-text {
+  font-size: 13px;
+  color: #6060A0;
+  font-weight: 400;
+}
+
+/* ── Steps ── */
+.fusion-steps {
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fusion-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0.45;
+  transition: opacity 0.3s;
+}
+
+.fusion-step.done   { opacity: 1; }
+.fusion-step.active { opacity: 1; }
+
+.step-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(124, 58, 237, 0.15);
+  border: 1.5px solid rgba(124, 58, 237, 0.3);
+}
+
+.fusion-step.done .step-icon {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #10B981;
+}
+
+.fusion-step.active .step-icon {
+  background: rgba(124, 58, 237, 0.25);
+  border-color: #7C3AED;
+}
+
+.step-check   { color: #10B981; font-size: 11px; font-weight: 700; }
+.step-dot     { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); }
+.step-spinner { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid rgba(124,58,237,0.3); border-top-color: #7C3AED; }
+
+.step-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #A0A0C0;
+  flex: 1;
+}
+
+.fusion-step.done .step-label   { color: #A78BFA; }
+.fusion-step.active .step-label { color: #F1F0FF; font-weight: 600; }
+
+.step-active-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #7C3AED;
+  animation: blink 1s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
+
+/* ── Progress bar ── */
+.fusion-progress-bar-track {
+  width: 100%;
+  max-width: 300px;
+  height: 4px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 2px;
+  position: relative;
+  overflow: visible;
+}
+
+.fusion-progress-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #5B21B6, #7C3AED, #A78BFA);
+  box-shadow: 0 0 8px rgba(124, 58, 237, 0.6);
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.fusion-progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #A78BFA;
+  box-shadow: 0 0 10px rgba(167, 139, 250, 0.9);
+}
+
+.fusion-progress-label {
+  position: absolute;
+  right: 0;
+  top: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6060A0;
+}
